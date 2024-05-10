@@ -2,28 +2,31 @@ import redis from 'redis';
 
 // Handle redis client
 class RedisClient {
-  constructor(client) {
-    this.client = redis.createClient({ 
+  constructor() {
+    this.client = redis.createClient({
       host: 'localhost',
-      port: 6379
-     }).on('error', redis.print);
+      port: 6379,
+    }).on('error', redis.print);
   }
+
   // Checks if connection to redis is successful
   isAlive() {
     return this.client.connected;
   }
+
   // Returns value stored in a key
   async get(key) {
     return new Promise((resolve, reject) => {
       this.client.get(key, (error, value) => {
         if (error) {
           reject(error);
-        } else{
+        } else {
           resolve(value);
         }
       });
     });
   }
+
   // Takes 3 args: key (str), value, duration (expiration in seconds)
   async set(key, value, duration) {
     return new Promise((resolve, reject) => {
@@ -36,6 +39,7 @@ class RedisClient {
       });
     });
   }
+
   // Deletes value of key argument in redis
   async del(key) {
     return new Promise((resolve, reject) => {
