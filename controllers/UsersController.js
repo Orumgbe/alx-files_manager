@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import sha1 from 'sha1';
 import dbClient from '../utils/db';
 
 // Handle user related requests
@@ -18,9 +18,7 @@ class UserController {
         res.status(400).send('Already  exist');
       } else {
         // Hash the password and store to database
-        const sha1 = crypto.createHash('sha1');
-        sha1.update(password.toString());
-        const hashedPass = sha1.digest('hex');
+        const hashedPass = sha1(password);
         const newUser = {
           email,
           password: hashedPass,
