@@ -12,7 +12,11 @@ class DBClient {
     this.database = process.env.DB_DATABASE || 'files_manager';
 
     // Create client
-    this.connect();
+    try {
+      this.connect();
+    } catch (error) {
+      console.log(`Error creating MongoDb client`);
+    }
   }
 
   // Connction handling function
@@ -20,13 +24,8 @@ class DBClient {
     // Create connection URI
     const uri = `mongodb://${this.host}:${this.port}`;
     // Create client and reassign active status
-    try {
-      this.client = await MongoClient.connect(uri, { useUnifiedTopology: true });
-      this.isActive = true;
-    } catch (error) {
-      console.error('Error creating MongoDb client');
-      throw (error);
-    }
+    this.client = await MongoClient.connect(uri, { useUnifiedTopology: true });
+    this.isActive = true;
   }
 
   // Check for connection with mongodb
@@ -57,5 +56,5 @@ class DBClient {
   }
 }
 
-const dbClient = DBClient();
+const dbClient = new DBClient();
 module.exports = dbClient;
