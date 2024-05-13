@@ -6,7 +6,7 @@ class UserController {
   // Saves new user to the database
   static async postNew(req, res) {
     const { email, password } = req.body;
-    const uExist = await dbClient.client.db(dbClient.database).collection('users').findOne({ email: email });
+    const uExist = await dbClient.client.db(dbClient.database).collection('users').findOne({ email });
     if (!email) {
       res.status(400).send('Missing email');
     } else if (!password) {
@@ -20,9 +20,9 @@ class UserController {
         sha1.update(password.toString());
         const hashedPass = sha1.digest('hex');
         const newUser = {
-          email: email,
+          email,
           password: hashedPass,
-        }
+        };
         const result = await dbClient.client.db(dbClient.database).collection('users').insertOne(newUser);
         res.status(201).send({ id: result.insertedId, email: newUser.email });
       } catch (error) {
@@ -31,3 +31,5 @@ class UserController {
     }
   }
 }
+
+module.exports = UserController;
