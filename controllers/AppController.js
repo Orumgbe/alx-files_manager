@@ -16,14 +16,8 @@ class AppController {
   // Get stats - class method of dbClient used to query stats
   static async getStats(req, res) {
     res.status(200);
-    let uNum;
-    let fNum;
-    try {
-      uNum = await dbClient.nbUsers();
-      fNum = await dbClient.nbFiles();
-    } catch (err) {
-      res.status(500).send({ error: err });
-    }
+    const uNum = await dbClient.nbUsers();
+    const fNum = await dbClient.nbFiles();
     const resObj = {
       users: uNum,
       files: fNum,

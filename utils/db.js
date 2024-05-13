@@ -39,7 +39,7 @@ class DBClient {
       const num = await this.client.db(this.database).collection('users').countDocuments();
       return num;
     } catch (error) {
-      console.error('Collection might be empty or nonexistent');
+      console.error(`An error occurred while counting users ${error}`);
       return 0;
     }
   }
@@ -50,7 +50,7 @@ class DBClient {
       const num = await this.client.db(this.database).collection('files').countDocuments();
       return num;
     } catch (error) {
-      console.error('Collection might be empty or nonexistent');
+      console.error(`An error occured while counting files: ${error}`);
       return 0;
     }
   }
