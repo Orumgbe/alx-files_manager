@@ -16,6 +16,7 @@ class DBClient {
       this.connect();
     } catch (error) {
       console.log(`Error creating MongoDb client: ${error}`);
+      this.isActive = false;
     }
   }
 
