@@ -15,7 +15,7 @@ class DBClient {
     try {
       this.connect();
     } catch (error) {
-      console.log(`Error creating MongoDb client`);
+      console.log(`Error creating MongoDb client: ${error}`);
     }
   }
 

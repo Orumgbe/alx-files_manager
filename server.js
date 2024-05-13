@@ -1,5 +1,5 @@
 import express from 'express';
-import router from './routes/index'
+import router from './routes/index';
 
 // Create server instance
 const server = express();
