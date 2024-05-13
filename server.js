@@ -4,6 +4,8 @@ import router from './routes/index';
 // Create server instance
 const server = express();
 
+// Enable access to request body json object
+server.use(express.json());
 // Load routes
 server.use('/', router);
 
