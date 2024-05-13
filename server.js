@@ -10,5 +10,5 @@ server.use('/', router);
 // Set listen port
 const port = process.env.PORT || 5000;
 server.listen(port, () => {
-  console.log(`Server listening on port ${port}`);
+  console.log(`Server running on port ${port}`);
 });
