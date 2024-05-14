@@ -12,12 +12,10 @@ class DBClient {
     this.database = process.env.DB_DATABASE || 'files_manager';
 
     // Create client
-    try {
-      this.connect();
-    } catch (error) {
+    this.connect().catch((error) => {
       console.log(`Error creating MongoDb client: ${error}`);
       this.isActive = false;
-    }
+    });
   }
 
   // Connction handling function
