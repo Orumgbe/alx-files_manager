@@ -37,7 +37,7 @@ class UserController {
 
   // Get user based on token
   static async getMe(req, res) {
-    const token = req.headers['X-Token'];
+    const token = req.headers('X-Token');
     if (!token) {
       res.status(401).send({ error: 'Unauthorized' });
     } else {

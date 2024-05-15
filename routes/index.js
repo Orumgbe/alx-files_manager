@@ -20,4 +20,7 @@ router.get('/connect', AuthController.getConnect);
 // Sign out user based on token
 router.get('/disconnect', AuthController.getDisconnect);
 
+// Get user based on token
+router.get('/me', UserController.getMe);
+
 module.exports = router;
