@@ -1,5 +1,7 @@
+import { ObjectId } from 'mongodb';
 import sha1 from 'sha1';
 import dbClient from '../utils/db';
+import redisClient from '../utils/redis';
 
 // Handle user related requests
 class UserController {
@@ -30,6 +32,25 @@ class UserController {
       } catch (error) {
         res.status(500).send(`Error creating user - ${error}`);
       }
+    }
+  }
+
+  // Get user based on token
+  static async getMe(req, res) {
+    const token = req.headers['X-Token'];
+    if (!token) {
+      res.status(401).send({ error: 'Unauthorized' });
+    } else {
+        // Query redis for user ID
+        await redisClient.get(`auth_${token}`).then(async (uID) => {
+          // Query db with the user ID
+          await dbClient.client.db(dbClient.database).collection('users').findOne({ _id: ObjectId(uID) });
+        }).then((user) => {
+          // Send response (ID and email)
+          res.status(200).send({ id: user._id, email: user.email });
+        }).catch((error) => {
+          res.status(401).send({ error: 'Unauthorized' });
+        });
     }
   }
 }
