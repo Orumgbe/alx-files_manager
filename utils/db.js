@@ -12,7 +12,9 @@ class DBClient {
     this.database = process.env.DB_DATABASE || 'files_manager';
 
     // Create client
-    this.connect().catch((error) => {
+    this.connect().then(() => {
+      console.log('Database is ready');
+    }).catch((error) => {
       console.log(`Error creating MongoDb client: ${error}`);
       this.isActive = false;
     });

@@ -41,16 +41,17 @@ class UserController {
     if (!token) {
       res.status(401).send({ error: 'Unauthorized' });
     } else {
-        // Query redis for user ID
-        await redisClient.get(`auth_${token}`).then(async (uID) => {
-          // Query db with the user ID
-          await dbClient.client.db(dbClient.database).collection('users').findOne({ _id: ObjectId(uID) });
-        }).then((user) => {
-          // Send response (ID and email)
-          res.status(200).send({ id: user._id, email: user.email });
-        }).catch((error) => {
-          res.status(401).send({ error: 'Unauthorized' });
-        });
+      // Query redis for user ID
+      await redisClient.get(`auth_${token}`).then(async (uID) => {
+        // Query db with the user ID
+        await dbClient.client.db(dbClient.database).collection('users').findOne({ _id: ObjectId(uID) });
+      }).then((user) => {
+        // Send response (ID and email)
+        res.status(200).send({ id: user._id, email: user.email });
+      }).catch((error) => {
+        console.error(error);
+        res.status(401).send({ error: 'Unauthorized' });
+      });
     }
   }
 }
