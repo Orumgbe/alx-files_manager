@@ -21,6 +21,6 @@ router.get('/connect', AuthController.getConnect);
 router.get('/disconnect', AuthController.getDisconnect);
 
 // Get user based on token
-router.get('/me', UserController.getMe);
+router.get('/users/me', UserController.getMe);
 
 module.exports = router;

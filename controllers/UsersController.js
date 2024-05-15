@@ -37,21 +37,19 @@ class UserController {
 
   // Get user based on token
   static async getMe(req, res) {
-    const token = req.headers('X-Token');
+    const token = req.header('X-Token');
     if (!token) {
       res.status(401).send({ error: 'Unauthorized' });
     } else {
-      // Query redis for user ID
-      await redisClient.get(`auth_${token}`).then(async (uID) => {
+      try {
+        // Query redis for user ID
+        const uID = await redisClient.get(`auth_${token}`);
         // Query db with the user ID
-        await dbClient.client.db(dbClient.database).collection('users').findOne({ _id: ObjectId(uID) });
-      }).then((user) => {
-        // Send response (ID and email)
+        const user = await dbClient.client.db(dbClient.database).collection('users').findOne({ _id: ObjectId(uID) });
         res.status(200).send({ id: user._id, email: user.email });
-      }).catch((error) => {
-        console.error(error);
+      } catch (error) {
         res.status(401).send({ error: 'Unauthorized' });
-      });
+      }
     }
   }
 }
