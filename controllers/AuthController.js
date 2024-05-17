@@ -53,12 +53,18 @@ class AuthController {
     if (!token) {
       res.status(401).send({ error: 'Unauthorized' });
     } else {
-      await redisClient.del(`auth_${token}`).then(() => {
-        res.status(204).send();
-      }).catch((error) => {
+      try {
+        const check = await redisClient.get(`auth_${token}`);
+        if (token === check) {
+          await redisClient.del(`auth_${token}`);
+          res.status(204).send();
+        } else {
+          res.status(401).send({ error: 'Unauthorized' });
+        }
+      } catch (error) {
         console.error(`An error occurred: ${error}`);
         res.end();
-      });
+      }
     }
   }
 }
