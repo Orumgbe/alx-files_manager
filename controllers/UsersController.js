@@ -18,7 +18,7 @@ class UserController {
       try {
         const uExist = await dbClient.client.db(dbClient.database).collection('users').findOne({ email });
         if (uExist) {
-          res.status(400).send({ error: 'Already  exist' });
+          res.status(400).send({ error: 'Already exist' });
         } else {
           // Hash the password and store to database
           const hashedPass = sha1(password);
